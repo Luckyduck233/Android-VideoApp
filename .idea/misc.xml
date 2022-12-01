@@ -3,15 +3,35 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable-anydpi-v26/collect_select.xml" value="0.168" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable-anydpi-v26/collect_unselect.xml" value="0.168" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable-anydpi-v26/my_select.xml" value="0.168" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable-anydpi-v26/my_unselect.xml" value="0.156" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable-anydpi-v26/tab_home_select.xml" value="0.168" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable-anydpi-v26/tab_home_unselect.xml" value="0.156" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/collect_select.xml" value="0.168" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/collect_unselect.xml" value="0.168" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/ic_account.xml" value="0.1655" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/ic_like.xml" value="0.2595" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/ic_search.xml" value="0.156" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/my_unselect.xml" value="0.168" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/shape_big_login_btn.xml" value="0.164" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/shape_big_register_btn.xml" value="0.169" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/shape_login_btn.xml" value="0.164" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/shape_login_form.xml" value="0.164" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/shape_register_btn.xml" value="0.164" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/shape_register_form.xml" value="0.169" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/drawable/shape_search_box.xml" value="0.156" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/layout/activity_home.xml" value="0.18768996960486323" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/layout/activity_login.xml" value="0.18768996960486323" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/layout/activity_register.xml" value="0.19384057971014493" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/layout/fragment_collect.xml" value="0.18768996960486323" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/layout/fragment_my.xml" value="0.18768996960486323" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/layout/fragment_video.xml" value="0.18768996960486323" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/layout/item_video_layout.xml" value="0.33" />
+        <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.168" />
         <entry key="..\:/Android_project/learn/VideoApp/app/src/main/res/xml/network_secruity_config.xml" value="0.20052083333333334" />
       </map>
     </option>

@@ -24,24 +24,33 @@ public class RegisterActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        initView();
-        initEvent();
     }
 
-    private void initView() {
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_register;
+    }
+
+    @Override
+    protected void initView() {
         etAccount = findViewById(R.id.et_account_register);
         etPwd = findViewById(R.id.et_pwd_register);
         btnRegister = findViewById(R.id.btn_register_register);
     }
 
-    private void initEvent() {
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initEvent() {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String account = etAccount.getText().toString().trim();
                 String pwd = etPwd.getText().toString().trim();
-                register(account,pwd);
+                register(account, pwd);
             }
         });
 

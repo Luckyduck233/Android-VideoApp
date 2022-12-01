@@ -27,12 +27,15 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        initView();
-        initEvent();
     }
 
-    private void initView() {
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void initView() {
         etAccount = findViewById(R.id.et_account_login);
         etPwd = findViewById(R.id.et_pwd_login);
         btnLogin = findViewById(R.id.btn_login);
@@ -40,7 +43,13 @@ public class LoginActivity extends BaseActivity {
         btnTest2 = findViewById(R.id.btn_test2);
     }
 
-    private void initEvent() {
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initEvent() {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +63,7 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 MySharedPreferences
                         .config(MyApplication.getContext(), ApiConfig.SP_TOKEN_NAME, MODE_PRIVATE)
-                        .setParam(etAccount.getText().toString(),etPwd.getText().toString());
+                        .setParam(etAccount.getText().toString(), etPwd.getText().toString());
             }
         });
         btnTest2.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +76,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
+
 
     private void login(String account, String pwd) {
         if (TextUtils.isEmpty(account)) {
@@ -89,11 +99,10 @@ public class LoginActivity extends BaseActivity {
                 if (loginResponse.getCode() == 0) {
                     String token = loginResponse.getToken();
 
-                    SharedPreferences sp = getSharedPreferences("sp_ttit", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("token", token);
-                    editor.commit();
+                    MySharedPreferences.config(MyApplication.getContext(), ApiConfig.SP_TOKEN_NAME, MODE_PRIVATE)
+                            .setParam("token", token);
                     showToastAsync("登录成功");
+                    navigateTo(HomeActivity.class);
                 } else {
                     String msg = loginResponse.getMsg();
                     showToastAsync(msg);
