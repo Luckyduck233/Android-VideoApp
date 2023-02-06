@@ -13,14 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VideoApp">
+        <!--configChanges 当横竖屏切换时 activity的生命周期不会变换-->
         <activity
             android:name=".activity.HomeActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true"
+            >
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.RegisterActivity"
@@ -30,7 +30,12 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

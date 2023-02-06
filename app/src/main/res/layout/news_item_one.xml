@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_12dp"
+    android:background="@color/colorVideoBgColor"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/news_title"
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="67.5dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingEnd="@dimen/dimen_24dp"
+            android:text="3213123123123123123123112312321312312"
+            android:textColor="@color/colorFontDefault"
+            android:textSize="@dimen/dimen_18sp" />
+
+        <ImageView
+            android:id="@+id/news_cover"
+            android:layout_width="120dp"
+            android:layout_height="67.5dp"
+            android:src="@mipmap/img2"
+            android:scaleType="fitXY"
+             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_24dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/dimen_12dp"
+        >
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/dimen_24dp"
+            android:layout_height="@dimen/dimen_24dp"
+            app:cardCornerRadius="@dimen/dimen_24dp"
+            >
+            <ImageView
+                android:layout_width="@dimen/dimen_24dp"
+                android:layout_height="@dimen/dimen_24dp"
+                android:src="@mipmap/img_head"
+                android:scaleType="fitXY"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/news_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_12dp"
+            android:text="游戏早知道"
+            android:textColor="@color/colorVideoSubTitle"
+            />
+        <TextView
+            android:id="@+id/news_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_12dp"
+            android:text="1评论"
+            android:textColor="@color/colorVideoSubTitle"
+            />
+        <TextView
+            android:id="@+id/news_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_12dp"
+            android:text="1小时前"
+            android:textColor="@color/colorVideoSubTitle"
+            />
+    </LinearLayout>
+</LinearLayout>

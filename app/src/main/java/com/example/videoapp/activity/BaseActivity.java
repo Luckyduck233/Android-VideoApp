@@ -2,6 +2,7 @@ package com.example.videoapp.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -9,6 +10,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.videoapp.MyApplication;
+import com.example.videoapp.api.ApiConfig;
 
 abstract public class BaseActivity extends AppCompatActivity {
     public Context mContext;
@@ -49,5 +53,16 @@ abstract public class BaseActivity extends AppCompatActivity {
         Log.d(TAG, "navigateTo: ");
         Intent intent = new Intent(mContext, cls);
         startActivity(intent);
+    }
+
+    public void navigateToWithFlag(Class cls, int Flags) {
+        Intent intent = new Intent(mContext, cls);
+        intent.setFlags(Flags);
+        startActivity(intent);
+    }
+
+    protected Object getStringFromSp(String key) {
+        SharedPreferences sp = MyApplication.getContext().getSharedPreferences(ApiConfig.SP_TOKEN_NAME, Context.MODE_PRIVATE);
+        return sp.getString(key, "");
     }
 }

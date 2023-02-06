@@ -16,7 +16,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_1dp"
+        android:layout_height="@dimen/dimen_0.5dp"
+        android:alpha="0.6"
         android:background="@color/divider"
         />
 
@@ -24,14 +25,14 @@
         android:id="@+id/commonTabLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_66dp"
-        android:background="#ffffff"
+        android:background="@color/colorVideoBgColor"
         tl:tl_iconHeight="@dimen/dimen_32dp"
         tl:tl_iconWidth="@dimen/dimen_32dp"
         tl:tl_indicator_color="#2C97DE"
         tl:tl_indicator_height="@dimen/dimen_0dp"
         tl:tl_textSelectColor="#2C97DE"
-        tl:tl_textUnselectColor="#66000000"
+        app:tl_textUnselectColor="@color/colorFontDefault"
         tl:tl_textsize="@dimen/dimen_14sp"
-        tl:tl_underline_color="#DDDDDD"
+        tl:tl_underline_color="@color/colorVideoBgColor"
         tl:tl_underline_height="@dimen/dimen_1dp"/>
 </LinearLayout>

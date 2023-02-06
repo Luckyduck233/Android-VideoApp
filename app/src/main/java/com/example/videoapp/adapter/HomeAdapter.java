@@ -23,6 +23,11 @@ public class HomeAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
+//        try {
+//            Thread.currentThread().sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         return mFragmentList.get(position);
     }
 
@@ -34,4 +39,5 @@ public class HomeAdapter extends FragmentPagerAdapter {
             return 0;
         }
     }
+
 }

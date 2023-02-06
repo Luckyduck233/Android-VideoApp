@@ -13,6 +13,7 @@ import com.example.videoapp.entity.TabEntity;
 import com.example.videoapp.fragment.CollectFragment;
 import com.example.videoapp.fragment.HomeFragment;
 import com.example.videoapp.fragment.MyFragment;
+import com.example.videoapp.fragment.NewsFragment;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -45,7 +46,7 @@ public class HomeActivity extends BaseActivity {
         viewPager = findViewById(R.id.viewpager);
         commonTabLayout = findViewById(R.id.commonTabLayout);
         mFragments.add(HomeFragment.newInstance());
-        mFragments.add(CollectFragment.newInstance());
+        mFragments.add(NewsFragment.newInstance());
         mFragments.add(MyFragment.newInstance());
 
 //        Fragment预加载 有多少个Fragment就加载多少个
@@ -63,6 +64,7 @@ public class HomeActivity extends BaseActivity {
 
         //        设置viewpager适配器
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mTitles, mFragments));
+
 
     }
 

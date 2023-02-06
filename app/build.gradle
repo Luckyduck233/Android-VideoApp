@@ -1,6 +1,32 @@
+//buildscript {
+//    ext.kotlin_version = "1.2.71"
+//    repositories {
+//        google()
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath 'com.android.tools.build:gradle:3.2.1'
+//
+//        classpath "ori.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
+
+//buildscript {
+//    ext.kotlin_version = '1.7.20'
+//
+//    dependencies {
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
 plugins {
     id 'com.android.application'
+//    id 'kotlin-android'
+//    id 'kotlin-android-extensions'
 }
+
+//apply plugin: 'kotlin-android'
+
+
 
 android {
     compileSdk 32
@@ -20,13 +46,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
 }
 
 dependencies {
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -39,4 +73,29 @@ dependencies {
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 //    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    // 下拉刷新
+    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
+    implementation  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
+    implementation  'io.github.scwang90:refresh-header-radar:2.0.5'       //雷达刷新头
+    implementation  'io.github.scwang90:refresh-header-falsify:2.0.5'     //虚拟刷新头
+    implementation  'io.github.scwang90:refresh-header-material:2.0.5'    //谷歌刷新头
+    implementation  'io.github.scwang90:refresh-header-two-level:2.0.5'   //二级刷新头
+    implementation  'io.github.scwang90:refresh-footer-ball:2.0.5'        //球脉冲加载
+    implementation  'io.github.scwang90:refresh-footer-classics:2.0.5'    //经典加载
+
+    implementation 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
+//    dkVideoPlayer
+//    # 必选，内部默认使用系统mediaplayer进行解码
+    implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.7'
+//    # 可选，包含StandardVideoController的实现
+    implementation 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.7'
+//    # 可选，使用exoplayer进行解码
+    implementation 'xyz.doikki.android.dkplayer:player-exo:3.3.7'
+//    # 可选，使用ijkplayer进行解码
+    implementation 'xyz.doikki.android.dkplayer:player-ijk:3.3.7'
+//    # 可选，如需要缓存或者抖音预加载功能请引入此库
+    implementation 'xyz.doikki.android.dkplayer:videocache:3.3.7'
 }

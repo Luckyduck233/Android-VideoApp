@@ -7,9 +7,30 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="divider">#EDEDED</color>
+    <color name="divider">#EAEAEA</color>
     <color name="myGrey">#D5D5D5</color>
     <color name="myGreyDeep1">#AFAFAF</color>
     <color name="myBlue">#0096D5</color>
+    <color name="blackwhite">#fff</color>
+
+<!--    appbar背景颜色-->
     <color name="homeColor">#344261</color>
+    <!--    默认字体颜色-->
+    <color name="colorFontDefault">#000</color>
+<!--    视频页背景-->
+
+<!--    免密登录-->
+    <color name="withoutPassword">#4CA0EA</color>
+<!--    列表视频背景-->
+    <color name="colorVideoBgColor">#fff</color>
+<!--    列表视频标题-->
+    <color name="colorVideoTitle">#000</color>
+<!--    列表视频副标题-->
+    <color name="colorVideoSubTitle">#AFAFAF</color>
+<!--    列表视频按钮-->
+    <color name="colorVideoButton">#D5D5D5</color>
+<!--    列表视频divider-->
+    <color name="colorVideoDivider">#F1F2F4</color>
+    <!--    列表新闻divider-->
+    <color name="colorNewsDivider">#F1F2F4</color>
 </resources>

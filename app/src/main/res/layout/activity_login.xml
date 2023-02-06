@@ -18,22 +18,25 @@
         android:layout_marginTop="@dimen/dimen_280dp"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_230dp"
             android:layout_marginStart="@dimen/dimen_18dp"
             android:layout_marginEnd="@dimen/dimen_18dp"
+            android:layout_gravity="center"
             android:background="@drawable/shape_login_form"
-            android:gravity="center"
-            android:orientation="vertical"
             android:paddingStart="@dimen/dimen_30dp"
-            android:paddingEnd="@dimen/dimen_30dp">
+            android:paddingEnd="@dimen/dimen_30dp"
+
+            >
 
             <LinearLayout
+                android:id="@+id/ll_account"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_23dp"
                 android:gravity="center_vertical"
-
                 android:orientation="horizontal">
 
                 <ImageView
@@ -48,23 +51,28 @@
                     android:layout_marginStart="@dimen/dimen_20dp"
                     android:background="@null"
                     android:hint="@string/account_hint"
+                    android:text="333666"
                     android:textColor="@color/black"
                     android:textColorHint="#bcbcbc"
                     android:textSize="@dimen/dimen_18sp" />
             </LinearLayout>
 
             <View
+                android:id="@+id/divider"
+                app:layout_constraintTop_toBottomOf="@id/ll_account"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_1dp"
-                android:layout_marginTop="23dp"
+                android:layout_marginTop="@dimen/dimen_23dp"
                 android:layout_marginBottom="23dp"
                 android:background="#e8e7e7" />
 
             <LinearLayout
+                android:id="@+id/ll_pwd"
+                app:layout_constraintTop_toBottomOf="@id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_23dp"
                 android:gravity="center_vertical"
-
                 android:orientation="horizontal">
 
                 <ImageView
@@ -83,7 +91,28 @@
                     android:textColorHint="#bcbcbc"
                     android:textSize="18sp" />
             </LinearLayout>
-        </LinearLayout>
+
+            <LinearLayout
+                app:layout_constraintTop_toBottomOf="@id/ll_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <CheckBox
+                    android:id="@+id/cb_remember"
+                    android:layout_width="@dimen/dimen_18dp"
+                    android:layout_height="@dimen/dimen_18dp"
+                    android:button="@drawable/cb_selected"
+                    android:background="@android:color/transparent"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="记住我"/>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/btn_login"
@@ -99,6 +128,14 @@
 
 
             />
+        <Button
+            android:id="@+id/btn_login_withoutPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:textColor="@color/withoutPassword"
+            android:text="免密登录" />
 
         <Button
             android:id="@+id/btn_test"
@@ -108,8 +145,8 @@
 
         <Button
             android:id="@+id/btn_test2"
-            android:text="test2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="test2" />
     </LinearLayout>
 </RelativeLayout>

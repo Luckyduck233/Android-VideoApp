@@ -18,6 +18,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     }
 
 
+
     @NonNull
     @Override
     public Fragment getItem(int position) {
