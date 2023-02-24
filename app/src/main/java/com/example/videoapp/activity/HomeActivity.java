@@ -104,4 +104,8 @@ public class HomeActivity extends BaseActivity {
         });
     }
 
+    private void changeFragment(int position){
+
+    }
+
 }

@@ -4,6 +4,7 @@
     <style name="Theme.VideoApp" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
+
         <item name="colorPrimaryVariant">@color/homeColor</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

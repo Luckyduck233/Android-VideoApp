@@ -45,6 +45,7 @@ public abstract class BaseFragment extends Fragment {
         initData();
     }
 
+
     protected abstract void initView();
 
     protected abstract void initData();
@@ -73,6 +74,10 @@ public abstract class BaseFragment extends Fragment {
         startActivity(intent);
     }
 
+    public void navigateTo(Class cls) {
+        Intent intent = new Intent(mContext, cls);
+        startActivity(intent);
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

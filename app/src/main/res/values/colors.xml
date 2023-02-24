@@ -13,6 +13,10 @@
     <color name="myBlue">#0096D5</color>
     <color name="blackwhite">#fff</color>
 
+<!--    透明黑-->
+    <color name="blackTransparent">#80000000</color>
+    <!--    透明灰-->
+    <color name="greyTransparent">#CCFFFFFF</color>
 <!--    appbar背景颜色-->
     <color name="homeColor">#344261</color>
     <!--    默认字体颜色-->

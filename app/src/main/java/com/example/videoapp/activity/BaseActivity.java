@@ -28,6 +28,8 @@ abstract public class BaseActivity extends AppCompatActivity {
         initEvent();
     }
 
+
+
     protected abstract int initLayout();
 
     protected abstract void initView();

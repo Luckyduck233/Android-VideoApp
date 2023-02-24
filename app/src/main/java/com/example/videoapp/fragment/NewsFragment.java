@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.videoapp.R;
 import com.example.videoapp.adapter.NewsAdapter;
@@ -18,6 +19,8 @@ import com.example.videoapp.api.Api;
 import com.example.videoapp.api.ApiConfig;
 import com.example.videoapp.api.TtitCallback;
 import com.example.videoapp.databinding.FragmentNewsBinding;
+import com.example.videoapp.easyMockEntity.Login.news.Data;
+import com.example.videoapp.easyMockEntity.Login.news.NewsListMockResponse;
 import com.example.videoapp.entity.News.NewsEntity;
 import com.example.videoapp.entity.News.NewsListResponse;
 import com.example.videoapp.sp.MySharedPreferences;
@@ -49,14 +52,37 @@ public class NewsFragment extends BaseFragment {
     private int pageNum = 1;
     public static String TAG = "20220110";
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+//    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+//        @Override
+//        public void handleMessage(@NonNull Message msg) {
+//            super.handleMessage(msg);
+//            switch (msg.what) {
+//                case 0:
+//                    newsAdapter.setDatas(datas);
+//                    newsAdapter.notifyDataSetChanged();
+//                    break;
+//            }
+//        }
+//    };
+
+    private final Handler mHandler = new Handler(Looper.getMainLooper()){
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case 0:
-                    newsAdapter.setDatas(datas);
-                    newsAdapter.notifyDataSetChanged();
+                case 1:
+                    Log.e(TAG, "handleMessage: "+1 );
+                    NewsListMockResponse response = (NewsListMockResponse) msg.obj;
+                    List<Data> dataList = response.getData();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            newsAdapter = new NewsAdapter(getContext());
+                            recyclerView.setAdapter(newsAdapter);
+                            newsAdapter.setDatas(dataList);
+                            newsAdapter.notifyDataSetChanged();
+                        }
+                    });
                     break;
             }
         }
@@ -89,65 +115,73 @@ public class NewsFragment extends BaseFragment {
         //        传入一个drawable对象来自定义我们想要的效果
         decoration.setDrawable(getResources().getDrawable(R.drawable.divider_news));
         recyclerView.addItemDecoration(decoration);
-
-
-
-        newsAdapter = new NewsAdapter(getContext());
-//        for (int i = 0; i < 15; i++) {
-//            int randomNum = new Random().nextInt(4);
-//            Log.e("000999", "initData: " + randomNum);
-//            NewsEntity newsEntity = new NewsEntity();
-//            newsEntity.setType(randomNum);
-//            datas.add(newsEntity);
-//        }
-//        newsAdapter.setDatas(datas);
-        recyclerView.setAdapter(newsAdapter);
+        getNewsList(true);
     }
 
-    private void getNewsList(boolean isRefresh) {
+//    private void getNewsList(boolean isRefresh) {
+//        HashMap<String, Object> map = new HashMap<>();
+//
+//        Api.config(ApiConfig.NEWS_LIST, map)
+//                .getRequestEm(getContext(),new TtitCallback() {
+//                    @Override
+//                    public void onSuccess(String result) {
+//                        if (isRefresh) {
+//                            smartRefreshLayout.finishRefresh(true);
+//                        } else {
+//                            smartRefreshLayout.finishLoadMore(true);
+//                        }
+//                        NewsListResponse response = new Gson().fromJson(result, NewsListResponse.class);
+//                        if (response.getCode() != null && response.getCode() == 0) {
+//                            List<NewsEntity> list = response.getPage().getList();
+//                            if (list != null && list.size() > 0) {
+//                                if (isRefresh) {
+//                                    Log.e(TAG, "refresh");
+//                                    datas = list;
+//                                } else {
+//                                    Log.e(TAG, "loading");
+//                                    datas.addAll(list);
+//                                }
+//                                mHandler.sendEmptyMessage(0);
+//                            } else {
+//                                if (isRefresh) {
+//                                    showToast("暂时无数据");
+//                                } else {
+//                                    showToast(" 没有更多数据了");
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Exception e) {
+//                        if (isRefresh) {
+//                            smartRefreshLayout.finishRefresh(true);
+//                        } else {
+//                            smartRefreshLayout.finishLoadMore(true);
+//                        }
+//                    }
+//                });
+//    }
+    private void getNewsList(boolean isRefresh){
         HashMap<String, Object> map = new HashMap<>();
-        map.put("page", pageNum);
-        map.put("limit", 5);
-        Api.config(ApiConfig.NEWS_LIST, map)
-                .getRequest(getContext(),new TtitCallback() {
-                    @Override
-                    public void onSuccess(String result) {
-                        if (isRefresh) {
-                            smartRefreshLayout.finishRefresh(true);
-                        } else {
-                            smartRefreshLayout.finishLoadMore(true);
-                        }
-                        NewsListResponse response = new Gson().fromJson(result, NewsListResponse.class);
-                        if (response.getCode() != null && response.getCode() == 0) {
-                            List<NewsEntity> list = response.getPage().getList();
-                            if (list != null && list.size() > 0) {
-                                if (isRefresh) {
-                                    Log.e(TAG, "refresh");
-                                    datas = list;
-                                } else {
-                                    Log.e(TAG, "loading");
-                                    datas.addAll(list);
-                                }
-                                mHandler.sendEmptyMessage(0);
-                            } else {
-                                if (isRefresh) {
-                                    showToast("暂时无数据");
-                                } else {
-                                    showToast(" 没有更多数据了");
-                                }
-                            }
-                        }
-                    }
+        Api.config(ApiConfig.EM_NEWS_LIST,map).getRequestEm(mContext, new TtitCallback() {
+            @Override
+            public void onSuccess(String result) {
+                NewsListMockResponse response = new Gson().fromJson(result, NewsListMockResponse.class);
+                if (response.getCode()!=null && response.getCode() == 200) {
+                    Log.e(TAG, "onSuccess: response news");
+                    Message message = Message.obtain();
+                    message.what = 1;
+                    message.obj = response;
+                    mHandler.handleMessage(message);
+                }
+            }
 
-                    @Override
-                    public void onFailure(Exception e) {
-                        if (isRefresh) {
-                            smartRefreshLayout.finishRefresh(true);
-                        } else {
-                            smartRefreshLayout.finishLoadMore(true);
-                        }
-                    }
-                });
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
     }
 
     @Override
@@ -162,19 +196,19 @@ public class NewsFragment extends BaseFragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 Log.e(TAG, "refresh");
                 pageNum = 1;
-//                smartRefreshLayout.finishRefresh(true);
+                smartRefreshLayout.finishRefresh(true);
                 getNewsList(true);
             }
         });smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 Log.e(TAG, "onLoadMore");
-//                smartRefreshLayout.finishLoadMore(true);
+                smartRefreshLayout.finishLoadMore(true);
                 pageNum++;
                 getNewsList(false);
             }
         });
-        getNewsList(true);
+//        getNewsList(true);
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -190,6 +224,7 @@ public class NewsFragment extends BaseFragment {
                 return false;
             }
         });
+
     }
 
 }

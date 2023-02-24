@@ -1,7 +1,6 @@
 package com.example.videoapp.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -16,20 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.videoapp.MyApplication;
 import com.example.videoapp.R;
-import com.example.videoapp.activity.LoginActivity;
 import com.example.videoapp.adapter.VideoAdapter;
 import com.example.videoapp.api.Api;
 import com.example.videoapp.api.ApiConfig;
 import com.example.videoapp.api.TtitCallback;
+import com.example.videoapp.easyMockEntity.Login.video.Data;
+import com.example.videoapp.easyMockEntity.Login.video.VideoListResponseTest;
 import com.example.videoapp.entity2.ListDTO;
 import com.example.videoapp.entity2.MyDTO;
 import com.example.videoapp.entity2.RandomHeadResoponse;
@@ -46,7 +44,6 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import xyz.doikki.videocontroller.StandardVideoController;
 import xyz.doikki.videocontroller.component.CompleteView;
@@ -65,7 +62,16 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
     private int pageNum = 1;
     private VideoAdapter videoAdapter;
     private List<ListDTO> mDatas = new ArrayList<>();
+    //    原始数据
+    private List<Data> mTestDatas = new ArrayList<>();
+    //    备份数据
+    private List<Data> mTestBackUpDatas = new ArrayList<>();
+    //    新加载的数据
+    private List<Data> mTestNewLoadDatas = new ArrayList<>();
+//    private
+
     private int count = 0;
+    private int page;
     public List<RandomHeadResoponse> list = new ArrayList<>();
     ArrayList<Object> imgUrlList = new ArrayList<>();
     private final Context mContext = MyApplication.getContext();
@@ -86,7 +92,7 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
 //        }
 //    });
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()){
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
@@ -100,8 +106,6 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
             }
         }
     };
-
-
 
 
     protected VideoView mVideoView;
@@ -127,9 +131,10 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
     public static VideoFragment newInstance(int categoryName) {
         VideoFragment fragment = new VideoFragment();
         fragment.categoryId = categoryName;
-        Log.e(TAG, categoryName+"");
+        Log.e(TAG, categoryName + "");
         return fragment;
     }
+
     @Override
     protected void initView() {
         initVideoView();
@@ -194,7 +199,6 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
     }
 
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -208,11 +212,11 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
                     if (mVideoView.isFullScreen()) {
                         mVideoView.stopFullScreen();
                         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-                        Log.e(TAG, "keyCode is : "+keyCode );
+                        Log.e(TAG, "keyCode is : " + keyCode);
                         return true;
                     } else {
 
-                        Log.e(TAG, "keyCode is : "+keyCode );
+                        Log.e(TAG, "keyCode is : " + keyCode);
                         requireActivity().finish();
                         return true;
                     }
@@ -248,17 +252,19 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
         mVideoView.setVideoController(mController);
     }
 
-
+    /**
+     * 如果是true则refresh，反则loadmore
+     **/
     private void getVideoListTest(boolean isRefresh) {
 
         Object spResult = MySharedPreferences.config(MyApplication.getContext(), ApiConfig.SP_TOKEN_NAME, getContext().MODE_PRIVATE).getParam("token", "");
         String token = spResult.toString();
         HashMap<String, Object> params = new HashMap<>();
-        params.put("page", pageNum);
+        params.put("page", page);
         params.put("limit", ApiConfig.PAGE_SIZE);
         Log.e("jjh000", pageNum + "");
-        Api.config(ApiConfig.VIDEO_LIST, params)
-                .getRequest(getContext(),new TtitCallback() {
+        Api.config(ApiConfig.EM_TEST, params)
+                .getRequestEm(getContext(), new TtitCallback() {
                     @Override
                     public void onSuccess(String result) {
                         if (isRefresh) {
@@ -267,18 +273,31 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
                             refreshLayout.finishLoadMore(true);
                         }
                         ArrayList<MyDTO> myDTOS = new ArrayList<>();
-                        VideoListResponse response = new Gson().fromJson(result, VideoListResponse.class);
+                        VideoListResponseTest response = new Gson().fromJson(result, VideoListResponseTest.class);
 
-                        if (response != null && response.getCode() == 0) {
-                            List<ListDTO> list = response.getPage().getList();
+                        if (response != null) {
+                            List<Data> list = response.getData();
+                            mTestDatas = list;
+                            mTestBackUpDatas = mTestDatas;
+                            Log.e(TAG, list.toString());
                             if (list != null && list.size() > 0) {
                                 if (isRefresh) {
-                                    mDatas = list;
+                                    if (mTestDatas != list) {
+                                        mTestDatas = mTestBackUpDatas;
+                                    }
+//                                    mDatas=list;
+//                                    mTestDatas = list;
+
                                 } else {
-                                    mDatas.addAll(list);
+//                                    mDatas.addAll(list);
+                                    if (page != 2) {
+                                        mTestDatas.addAll(list);
+                                        mTestBackUpDatas = mTestDatas;
+                                        page++;
+                                    }
                                 }
-                                Log.d(TAG, mDatas.size() + ":");
-                                videoAdapter.setmDatas(mDatas);
+                                Log.d(TAG, mTestDatas.size() + ":");
+                                videoAdapter.setmDatas(mTestDatas);
 
                                 //需要在主线程渲染ui
                                 mHandler.sendEmptyMessage(0);
@@ -307,9 +326,8 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
     }
 
 
-
     private void getImgUrl(int counts) {
-        Log.d("jiangjia", counts+"");
+        Log.d("jiangjia", counts + "");
 
         HashMap<String, Object> params2 = new HashMap<>();
         params2.put("method", "zsy");
@@ -321,34 +339,35 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
                 super.run();
                 while (true) {
 //                        sleep(500);
-                        if (count < counts) {
-                            count++;
-                            Api.config2(ApiConfig.RANDOM_HEAD, params2).getRequest(getContext(),new TtitCallback() {
-                                @Override
-                                public void onSuccess(String result) {
-                                    RandomHeadResoponse resoponse = new Gson().fromJson(result, RandomHeadResoponse.class);
-                                    if (resoponse != null && resoponse.getCode().equals("200")) {
-                                        imgUrlList.add(resoponse.getImgurl());
+                    if (count < counts) {
+                        count++;
+                        Api.config2(ApiConfig.RANDOM_HEAD, params2).getRequest(getContext(), new TtitCallback() {
+                            @Override
+                            public void onSuccess(String result) {
+                                RandomHeadResoponse resoponse = new Gson().fromJson(result, RandomHeadResoponse.class);
+                                if (resoponse != null && resoponse.getCode().equals("200")) {
+                                    imgUrlList.add(resoponse.getImgurl());
 //                                        Log.e(TAG, imgUrlList.toString() );
-                                        Log.d("jiahao", count+"");
-                                        if (count == counts) {
-                                            Log.d(TAG, "onSuccess: ");
-                                            videoAdapter.setHeadimgUrl2(imgUrlList);
-                                        }
+                                    Log.d("jiahao", count + "");
+                                    if (count == counts) {
+                                        Log.d(TAG, "onSuccess: ");
+                                        videoAdapter.setHeadimgUrl2(imgUrlList);
                                     }
                                 }
-                                @Override
-                                public void onFailure(Exception e) {
+                            }
 
-                                }
-                            });
+                            @Override
+                            public void onFailure(Exception e) {
+
+                            }
+                        });
 //                        Log.d("getImgUrl", count + "");
-                        } else {
-                            Log.d("getImgUrl", "stop :");
-                            int size = imgUrlList.size();
-                            Log.d(TAG, "stop : "+size);
-                            break;
-                        }
+                    } else {
+                        Log.d("getImgUrl", "stop :");
+                        int size = imgUrlList.size();
+                        Log.d(TAG, "stop : " + size);
+                        break;
+                    }
 
 
                 }
@@ -372,46 +391,46 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
         Object spResult = MySharedPreferences.config(MyApplication.getContext(), ApiConfig.SP_TOKEN_NAME, MyApplication.getContext().MODE_PRIVATE).getParam("token", "");
         String token = spResult.toString();
         Log.d(TAG, token);
-            Log.d("1204jjh", "setmDatas12");
-            HashMap<String, Object> params = new HashMap<>();
-            params.put("page", pageNum);
-            params.put("limit", ApiConfig.PAGE_SIZE);
-            Api.config(ApiConfig.VIDEO_LIST, params).getRequest(getContext(),new TtitCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.d("1204jjh", "setmDatas2");
-                    if (isRefresh) {
-                        refreshLayout.finishRefresh(true);
-                    } else {
-                        refreshLayout.finishLoadMore(true);
+        Log.d("1204jjh", "setmDatas12");
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("page", pageNum);
+        params.put("limit", ApiConfig.PAGE_SIZE);
+        Api.config(ApiConfig.VIDEO_LIST, params).getRequest(getContext(), new TtitCallback() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d("1204jjh", "setmDatas2");
+                if (isRefresh) {
+                    refreshLayout.finishRefresh(true);
+                } else {
+                    refreshLayout.finishLoadMore(true);
+                }
+                VideoListResponse response = new Gson().fromJson(result, VideoListResponse.class);
+                if (response != null && response.getCode() == 0) {
+                    List<ListDTO> list = response.getPage().getList();
+                    if (list != null && list.size() > 0) {
+                        if (isRefresh) {
+                            mDatas = list;
+                        } else {
+                            mDatas.addAll(list);
+                        }
+//                            videoAdapter.setmDatas(mDatas);
+                        Log.d("1204jjh", "setmDatas3");
+                        videoAdapter.notifyDataSetChanged();
                     }
-                    VideoListResponse response = new Gson().fromJson(result, VideoListResponse.class);
-                    if (response != null && response.getCode() == 0) {
-                        List<ListDTO> list = response.getPage().getList();
-                        if (list != null && list.size() > 0) {
-                            if (isRefresh) {
-                                mDatas = list;
-                            } else {
-                                mDatas.addAll(list);
-                            }
-                            videoAdapter.setmDatas(mDatas);
-                            Log.d("1204jjh", "setmDatas3");
-                            videoAdapter.notifyDataSetChanged();
-                        }
 //                        如果返回为空
-                        else {
-                            if (isRefresh) {
-                                Toast.makeText(getContext(), "暂时加载无数据", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getContext(), "没有更多数据了", Toast.LENGTH_SHORT).show();
-                            }
+                    else {
+                        if (isRefresh) {
+                            Toast.makeText(getContext(), "暂时加载无数据", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "没有更多数据了", Toast.LENGTH_SHORT).show();
                         }
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mRecyclerView.setAdapter(videoAdapter);
-                            }
-                        });
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRecyclerView.setAdapter(videoAdapter);
+                        }
+                    });
 
 //                        我的头像url实体类列表
 //                         List<MyDTO> myDatas = new ArrayList<>();
@@ -421,18 +440,18 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
 //                            myDTO.setHeadUrl("https://api.btstu.cn/sjtx/api.php");
 //                            myDatas.add(myDTO);
 //                        }
-                    }
                 }
+            }
 
-                @Override
-                public void onFailure(Exception e) {
-                    if (isRefresh) {
-                        refreshLayout.finishRefresh(true);
-                    } else {
-                        refreshLayout.finishLoadMore(true);
-                    }
+            @Override
+            public void onFailure(Exception e) {
+                if (isRefresh) {
+                    refreshLayout.finishRefresh(true);
+                } else {
+                    refreshLayout.finishLoadMore(true);
                 }
-            });
+            }
+        });
     }
 
     @Override
@@ -477,12 +496,13 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
      */
     @Override
     public void onItemChildClick(int position) {
-        Log.e(TAG, "onItemChildClick: 666" );
+        Log.e(TAG, "onItemChildClick: 666");
         startPlay(position);
     }
 
     /**
      * 开始播放
+     *
      * @param position 列表位置
      */
     protected void startPlay(int position) {
@@ -490,7 +510,8 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
         if (mCurPos != -1) {
             releaseVideoView();
         }
-        ListDTO videoBean = mDatas.get(position);
+//        ListDTO videoBean = mTestDatas.get(position);
+        Data videoBean = mTestDatas.get(position);
         //边播边存
 //        String proxyUrl = ProxyVideoCacheManager.getProxy(getActivity()).getProxyUrl(videoBean.getUrl());
 //        mVideoView.setUrl(proxyUrl);
@@ -515,7 +536,7 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
         if (mVideoView.isFullScreen()) {
             mVideoView.stopFullScreen();
         }
-        if(getActivity().getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+        if (getActivity().getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         mCurPos = -1;

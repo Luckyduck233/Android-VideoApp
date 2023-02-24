@@ -34,10 +34,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        if (!TextUtils.isEmpty((String) getStringFromSp("token"))) {
-            navigateTo(HomeActivity.class);
-            finish();
-        }
+//        if (!TextUtils.isEmpty((String) getStringFromSp("token"))) {
+//            navigateTo(HomeActivity.class);
+//            finish();
+//        }
     }
 
     @Override

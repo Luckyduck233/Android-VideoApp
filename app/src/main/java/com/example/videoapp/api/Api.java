@@ -40,7 +40,8 @@ public class Api {
         Log.d(TAG, "config: ");
         client = new OkHttpClient.Builder()
                 .build();
-        requestUrl = ApiConfig.BASE_URL2 + url;
+
+        requestUrl = ApiConfig.EM_BASE_URL + url;
         mParams = params;
         return api;
     }
@@ -121,6 +122,32 @@ public class Api {
                 callback.onSuccess(result);
             }
         });
+    }
+
+    public void getRequestEm(Context context,TtitCallback callback){
+                    String url = getAppendUrl(requestUrl, mParams);
+                    Log.e("EM loginUrl", url );
+
+                    Request request = new Request.Builder()
+                            .addHeader("token", "token")
+                            .url(url)
+                            .get()
+                            .build();
+
+                    Call call = client.newCall(request);
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            callback.onFailure(e);
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String result = response.body().string();
+
+                            callback.onSuccess(result);
+                        }
+                    });
     }
 
     private String getAppendUrl(String url, Map<String, Object> map) {

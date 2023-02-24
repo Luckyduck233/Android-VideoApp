@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.videoapp.R;
+import com.example.videoapp.easyMockEntity.Login.video.Data;
 import com.example.videoapp.entity2.ListDTO;
 import com.example.videoapp.entity2.MyDTO;
-import com.example.videoapp.entity2.RandomHeadResoponse;
 import com.example.videoapp.listener.OnItemChildClickListener;
 import com.example.videoapp.listener.OnItemClickListener;
 import com.squareup.picasso.Picasso;
@@ -30,6 +30,7 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Context mContext;
     private List<ListDTO> mDatas;
     private List<MyDTO> mDatas2;
+    private List<Data> mTestData;
     private String mHeadImgUrl;
     List<Object> imgUrlList = new ArrayList<>();
     List<Object> imgUrlList2 = new ArrayList<>();
@@ -41,9 +42,11 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public OnItemClickListener mOnItemClickListener;
 
-    public void setmDatas(List<ListDTO> datas) {
-        this.mDatas = datas;
-        Log.e(TAG, mDatas.toString());
+    public void setmDatas(List<Data> datas) {
+//        this.mDatas = datas;
+//        Log.e(TAG, mDatas.toString());
+        this.mTestData = datas;
+        Log.e(TAG, mTestData.toString());
     }
 
     public void setmDatas2(List<MyDTO> mDatas2) {
@@ -86,16 +89,17 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //        Log.e(TAG, "onBindViewHolder: ");
         ViewHolder vh = (ViewHolder) holder;
 
-        ListDTO videoEntity = mDatas.get(position);
+        Data videoEntity = mTestData.get(position);
 //        Log.d(TAG, position+"");
 //        Log.e(TAG, mDatas.toString());
-        vh.tvTitle.setText(String.valueOf(mDatas.get(position).getVtitle()));
-        vh.tvAuthor.setText(String.valueOf(mDatas.get(position).getAuthor()));
-        vh.tvCollect.setText(String.valueOf(mDatas.get(position).getCollectNum()));
-        vh.tvComments.setText(String.valueOf(mDatas.get(position).getCommentNum()));
-        vh.tvLike.setText(String.valueOf(mDatas.get(position).getLikeNum()));
+        vh.tvTitle.setText(String.valueOf(mTestData.get(position).getVtitle()));
+        vh.tvAuthor.setText(String.valueOf(mTestData.get(position).getAuthor()));
+        vh.tvCollect.setText(String.valueOf(mTestData.get(position).getCommentNum()));
+        vh.tvComments.setText(String.valueOf(mTestData.get(position).getCommentNum()));
+        vh.tvLike.setText(String.valueOf(mTestData.get(position).getLikeNum()));
 
-        Picasso.with(mContext).load("http://p1-tt.byteimg.com/large/pgc-image/S6KR5958Y5X2Qt?from=pc").into(vh.mThumb);
+        Picasso.with(mContext).load(videoEntity.getHeadurl()).into(vh.imgHeader);
+        Picasso.with(mContext).load(videoEntity.getCoverurl()).into(vh.mThumb);
 
 //        Log.e("position is", position+"" );
 //        Log.e("imgUrlList2.size is", imgUrlList2.size()+"" );
@@ -130,9 +134,9 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public int getItemCount() {
 //        Log.e(TAG, "getItemCount: "+mDatas.size());
-        if (mDatas != null) {
+        if (mTestData != null) {
 //            Log.e("jjh000999", mDatas.size()+"" );
-            return mDatas.size();
+            return mTestData.size();
 //            return 5;
         } else {
             return 0;

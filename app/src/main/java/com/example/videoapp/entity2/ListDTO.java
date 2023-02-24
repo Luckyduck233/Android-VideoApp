@@ -1,9 +1,6 @@
 package com.example.videoapp.entity2;
 
 public class ListDTO {
-
-
-
     private Integer vid;
     private String vtitle;
     private String author;

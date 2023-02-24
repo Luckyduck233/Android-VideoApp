@@ -3,6 +3,7 @@
     <style name="Theme.VideoApp" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
+        <!--        状态栏颜色-->
         <item name="colorPrimaryVariant">@color/homeColor</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->

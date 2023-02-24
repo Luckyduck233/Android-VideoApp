@@ -18,4 +18,16 @@ public class ApiConfig {
     public static final int PAGE_SIZE = 5;
 //    随机头像
     public static final String RANDOM_HEAD = "https://api.btstu.cn/sjtx/api.php";
+
+
+//    easy mock
+    public static final String EM_BASE_URL = "https://mock.presstime.cn/mock/63e33df047892c65279783be/example";
+
+    public static final String EM_LOGIN = "/login";
+
+    public static final String EM_VIDEO_LIST_TEST = "/getVideoListTest";
+
+    public static final String EM_TEST = "/test";
+
+    public static final String EM_NEWS_LIST = "/getNewsList";
 }

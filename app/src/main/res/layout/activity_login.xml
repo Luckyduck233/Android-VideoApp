@@ -51,7 +51,7 @@
                     android:layout_marginStart="@dimen/dimen_20dp"
                     android:background="@null"
                     android:hint="@string/account_hint"
-                    android:text="333666"
+                    android:text="admin"
                     android:textColor="@color/black"
                     android:textColorHint="#bcbcbc"
                     android:textSize="@dimen/dimen_18sp" />
@@ -87,6 +87,7 @@
                     android:layout_marginStart="20dp"
                     android:background="@null"
                     android:hint="@string/pw_hint"
+                    android:text="1"
                     android:textColor="@color/black"
                     android:textColorHint="#bcbcbc"
                     android:textSize="18sp" />

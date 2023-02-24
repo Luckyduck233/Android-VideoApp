@@ -13,15 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VideoApp">
-        <!--configChanges 当横竖屏切换时 activity的生命周期不会变换-->
+        <activity
+            android:name=".activity.TestActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <!-- configChanges 当横竖屏切换时 activity的生命周期不会变换 -->
         <activity
             android:name=".activity.HomeActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"
             android:exported="true"
-            >
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activity.RegisterActivity"
             android:exported="false" />
