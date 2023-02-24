@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="ani" >
+        <item name="android:windowAnimationStyle">@style/LoadingAnimation</item>
+    </style>
+
+    <style name="LoadingAnimation">
+        <item name="android:windowEnterAnimation">@anim/rotate_loading</item>
+    </style>
+</resources>
