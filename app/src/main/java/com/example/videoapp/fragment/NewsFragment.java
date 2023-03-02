@@ -36,6 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NewsFragment#newInstance} factory method to
@@ -124,7 +127,7 @@ public class NewsFragment extends BaseFragment {
 //        Api.config(ApiConfig.NEWS_LIST, map)
 //                .getRequestEm(getContext(),new TtitCallback() {
 //                    @Override
-//                    public void onSuccess(String result) {
+//                    public void onSuccess(Call call, Response resp, String result) {
 //                        if (isRefresh) {
 //                            smartRefreshLayout.finishRefresh(true);
 //                        } else {
@@ -153,7 +156,7 @@ public class NewsFragment extends BaseFragment {
 //                    }
 //
 //                    @Override
-//                    public void onFailure(Exception e) {
+//                    public void onFailure(Call call,Exception e) {
 //                        if (isRefresh) {
 //                            smartRefreshLayout.finishRefresh(true);
 //                        } else {
@@ -166,7 +169,7 @@ public class NewsFragment extends BaseFragment {
         HashMap<String, Object> map = new HashMap<>();
         Api.config(ApiConfig.EM_NEWS_LIST,map).getRequestEm(mContext, new TtitCallback() {
             @Override
-            public void onSuccess(String result) {
+            public void onSuccess(Call call, Response resp, String result) {
                 NewsListMockResponse response = new Gson().fromJson(result, NewsListMockResponse.class);
                 if (response.getCode()!=null && response.getCode() == 200) {
                     Log.e(TAG, "onSuccess: response news");
@@ -178,7 +181,7 @@ public class NewsFragment extends BaseFragment {
             }
 
             @Override
-            public void onFailure(Exception e) {
+            public void onFailure(Call call,Exception e) {
 
             }
         });

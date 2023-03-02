@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
 
 public class HomeFragment extends BaseFragment {
     private ArrayList<Fragment> mFragments = new ArrayList<>();
@@ -131,7 +134,7 @@ public class HomeFragment extends BaseFragment {
         Api.config(ApiConfig.EM_TEST, map)
                 .getRequestEm(mContext, new TtitCallback() {
                     @Override
-                    public void onSuccess(String result) {
+                    public void onSuccess(Call call, Response response1, String result) {
                         response = new Gson().fromJson(result, VideoListResponseTest.class);
                         String s = response.toString();
                         Log.e("101010", s );
@@ -140,7 +143,7 @@ public class HomeFragment extends BaseFragment {
                         }
                     }
                     @Override
-                    public void onFailure(Exception e) {
+                    public void onFailure(Call call, Exception e) {
 
                     }
                 });
@@ -185,7 +188,7 @@ public class HomeFragment extends BaseFragment {
 //            Api.config(ApiConfig.VIDEO_CATEGORY_LIST,params)
 //                    .getRequestEm(getContext() ,new TtitCallback() {
 //                        @Override
-//                        public void onSuccess(String result) {
+//                        public void onSuccess(Call call, Response resp, String result) {
 //                            VideoCategoryResponse response = new Gson().fromJson(result, VideoCategoryResponse.class);
 //                            if (response != null && response.getCode() == 0) {
 //                                List<CategoryEntity> pageList = response.getPage().getList();
@@ -200,7 +203,7 @@ public class HomeFragment extends BaseFragment {
 //                        }
 //
 //                        @Override
-//                        public void onFailure(Exception e) {
+//                        public void onFailure(Call call,Exception e) {
 //
 //                        }
 //                    });

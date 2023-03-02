@@ -1,19 +1,14 @@
 package com.example.videoapp.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 
 import com.example.videoapp.MyApplication;
 import com.example.videoapp.R;
@@ -23,15 +18,23 @@ import com.example.videoapp.api.TtitCallback;
 import com.example.videoapp.easyMockEntity.Login.login.MockLoginResponse;
 import com.example.videoapp.entity.LoginResponse;
 import com.example.videoapp.sp.MySharedPreferences;
+import com.example.videoapp.util.CustomPopupWindow;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
     private EditText etAccount, etPwd;
     private Button btnLogin, btnTest, btnTest2, btnLoginWithoutPassword;
     private CheckBox cbRemember;
+    private Timer mTimer;
+    private TimerTask mTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,28 +91,120 @@ public class LoginActivity extends BaseActivity {
                 login(account, pwd);
             }
         });
-        btnTest.setOnClickListener(v->{
-            Log.d(TAG, "initEvent: ");
-            Window window = getWindow();
-            if (window != null) {
-                Log.d(TAG, "enter: ");
+//        btnTest.setOnClickListener(v->{
+//            Log.d(TAG, "initEvent: ");
+//            Window window = getWindow();
+//            if (window != null) {
+//                Log.d(TAG, "enter: ");
+//
+//
+//                Dialog dialog = new Dialog(LoginActivity.this);
+//                dialog.setContentView(R.layout.alertlog_loading);
+//                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                dialog.getWindow().setGravity(Gravity.CENTER);
+//                dialog.getWindow().setWindowAnimations(R.style.AnimBottom);
+//
+//
+//
+//                CustomTimerUtils customTimerUtils = new CustomTimerUtils(3000, 500,dialog);
+//                customTimerUtils.start();
+////                try {
+////                    Thread.sleep(3000);
+////                    dialog.dismiss();
+////                } catch (InterruptedException e) {
+////                    e.printStackTrace();
+////                }
+//            }
+//
+//
+//        });
 
-                Dialog dialog = new Dialog(LoginActivity.this);
-                dialog.setContentView(R.layout.alertlog_loading);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.getWindow().setGravity(Gravity.TOP);
-                dialog.getWindow().setWindowAnimations(R.style.LoadingAnimation);
-                dialog.show();
-                try {
-                    Thread.sleep(3000);
-                    dialog.dismiss();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+//        btnTest.setOnClickListener(v->{
+//            SystemUtils systemUtils = new SystemUtils();
+//            systemUtils.customDialog(LoginActivity.this,
+//                    R.layout.alertlog_loading,
+//                    R.anim.rotate_loading,
+//                    R.style.AnimBottom,
+//                    WindowManager.LayoutParams.WRAP_CONTENT,
+//                    WindowManager.LayoutParams.WRAP_CONTENT,
+//                    Gravity.CENTER
+//            );
+//        });
 
+//        btnTest.setOnClickListener(v->{
+//            if (mTimer == null && mTask == null) {
+//                mTimer = new Timer();
+//                mTask = new TimerTask(){
+//                    @Override
+//                    public void run() {
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                            }
+//                        });
+//                    }
+//                };
+//                mTimer.schedule(mTask,0,1000);
+//            }
+//        });
 
+//        btnTest.setOnClickListener(v -> {
+//            Api.config(ApiConfig.FM_TEST_TIMEOUT, null, 3).getRequestFm(this, new TtitCallback() {
+//                @Override
+//                public void onSuccess(Call call, Response resp, String result) {
+//                    Log.e(TAG,   result);
+//                }
+//
+//                @Override
+//                public void onFailure(Call call,Exception e) {
+//                    Log.e(TAG, "Time out" + e);
+//                    showToastAsync("超时连接");
+//                }
+//            });
+//        });
+
+//        btnTest.setOnClickListener(v->{
+////            View view = getLayoutInflater().inflate(R.layout.alertlog_loading, null);
+////            PopupWindow popupWindow = new CustomPopupWindow(this,view).setPopupWindow();
+////            popupWindow.showAtLocation(view,Gravity.CENTER,0,0);
+//
+//            CustomPopupWindow customPopupWindow = new CustomPopupWindow(this, R.layout.alertlog_loading);
+//            customPopupWindow.setAnimationStyle(R.style.AnimBottom);
+//            customPopupWindow.setTargetControlAnimation(R.anim.rotate_loading, R.id.iv_rotateCircle);
+//            customPopupWindow.show();
+//        });
+
+        btnTest.setOnClickListener(v -> {
+//            CustomPopupWindow.Builder builder = CustomPopupWindow.with(mContext)
+//                    .setContentView(R.layout.alertlog_loading)
+//                    .animationStyle(R.style.AnimBottom);
+//            PopupWindow popupWindow = builder.build();
+//            popupWindow.getContentView().
+            PopupWindow popupWindow = CustomPopupWindow.with(mContext).setTargetControlAnimation(R.id.iv_rotateCircle, R.anim.rotate_loading).build();
+            Api.config(ApiConfig.FM_TEST_TIMEOUT, null, 5)
+                    .getRequestFm(mContext, new TtitCallback() {
+                        @Override
+                        public void onSuccess(Call call, Response resp, String result) {
+                            if (resp.isSuccessful()) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        popupWindow.dismiss();
+                                    }
+                                });
+                            }
+
+                            Log.e(TAG, result);
+
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Exception e) {
+
+                        }
+                    });
         });
         btnTest2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,22 +234,22 @@ public class LoginActivity extends BaseActivity {
         map.put("pwd", pwd);
         Api.config(ApiConfig.EM_LOGIN, map).getRequestEm(mContext, new TtitCallback() {
             @Override
-            public void onSuccess(String result) {
+            public void onSuccess(Call call, Response resp, String result) {
                 Log.d("onSuccess", result);
 //                showToastAsync(result);
                 Gson gson = new Gson();
-                MockLoginResponse response = gson.fromJson(result, MockLoginResponse.class);
-                if (response.getCode() == 200) {
-                    String token = response.getContent().getToken();
+                MockLoginResponse loginResponse = gson.fromJson(result, MockLoginResponse.class);
+                if (loginResponse.getCode() == 200) {
+                    String token = loginResponse.getContent().getToken();
 //                    Log.e("EM", token);
-                    String msg = response.getContent().getMsg();
-                    if (response.getContent().isIsAccountTrue()) {
+                    String msg = loginResponse.getContent().getMsg();
+                    if (loginResponse.getContent().isIsAccountTrue()) {
                         MySharedPreferences
                                 .config(MyApplication.getContext(), ApiConfig.SP_TOKEN_NAME, MODE_PRIVATE)
                                 .setParam("token", token);
                         Log.d("EM", msg);
                         showToastAsync("登录成功");
-                        navigateToWithFlag(HomeActivity.class,Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        navigateToWithFlag(HomeActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     } else {
 
 //                    showToastAsync(msg);
@@ -162,14 +257,13 @@ public class LoginActivity extends BaseActivity {
                     }
 
 //                    navigateToWithFlag(HomeActivity.class,Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                }
-                else {
+                } else {
                     showToastAsync("访问失败");
                 }
             }
 
             @Override
-            public void onFailure(Exception e) {
+            public void onFailure(Call call, Exception e) {
 
             }
         });
@@ -182,24 +276,24 @@ public class LoginActivity extends BaseActivity {
 
         Api.config(ApiConfig.LOGIN, params).postRequest(new TtitCallback() {
             @Override
-            public void onSuccess(String result) {
-                LoginResponse response = new Gson().fromJson(result, LoginResponse.class);
-                Integer code = response.getCode();
+            public void onSuccess(Call call, Response resp, String result) {
+                LoginResponse loginResponse = new Gson().fromJson(result, LoginResponse.class);
+                Integer code = loginResponse.getCode();
                 if (code == 0) {
-                    String token = response.getToken();
+                    String token = loginResponse.getToken();
                     MySharedPreferences
                             .config(MyApplication.getContext(), ApiConfig.SP_TOKEN_NAME, MODE_PRIVATE)
                             .setParam("token", token);
                     showToastAsync("登录成功");
                     navigateToWithFlag(HomeActivity.class, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 } else {
-                    showToastAsync(response.getMsg());
+                    showToastAsync(loginResponse.getMsg());
                     showToastAsync("登录失败请输入账号密码登录");
                 }
             }
 
             @Override
-            public void onFailure(Exception e) {
+            public void onFailure(Call call, Exception e) {
 
             }
         });

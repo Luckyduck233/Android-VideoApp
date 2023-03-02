@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.example.videoapp.activity.LoginActivity;
 import com.example.videoapp.util.AppConfig;
+import com.example.videoapp.util.SystemUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -46,6 +48,23 @@ public class Api {
         return api;
     }
 
+    /*
+    * 可设置访问超时
+    * */
+    public static Api config(String url, HashMap<String, Object> params, long timeout) {
+        Log.d(TAG, "config: ");
+        client = new OkHttpClient.Builder()
+                .connectTimeout(timeout,TimeUnit.SECONDS)
+                .writeTimeout(timeout,TimeUnit.SECONDS)
+                .readTimeout(timeout,TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                .build();
+
+        requestUrl = ApiConfig.FM_BASE_URL + url;
+        mParams = params;
+        return api;
+    }
+
     public static Api config2(String url, HashMap<String, Object> params) {
         Log.d(TAG, "config2: ");
         client = new OkHttpClient.Builder().build();
@@ -66,18 +85,18 @@ public class Api {
                 .get()
                 .build();
         String token1 = request.header("token");
-        Log.e(TAG, "token："+token1);
+        Log.e(TAG, "token：" + token1);
 
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                callback.onFailure(e);
+                callback.onFailure(call,e);
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String result = response.body().string();
+            public void onResponse(Call call, Response resp) throws IOException {
+                String result = resp.body().string();
 //                Log.e(TAG,"result :"+ result );
                 try {
                     JSONObject jsonObject = new JSONObject(result);
@@ -85,7 +104,7 @@ public class Api {
                     if (code.equals("401")) {
                         context.startActivity(new Intent(context, LoginActivity.class));
                     } else {
-                        callback.onSuccess(result);
+                        callback.onSuccess(call,resp,result);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -98,7 +117,7 @@ public class Api {
         JSONObject jsonObject = new JSONObject(mParams);
         String jsonStr = jsonObject.toString();
         RequestBody requestBodyJson = RequestBody.create(MediaType.parse("application/json;charset=utf-8"), jsonStr);
-        Log.e(TAG, requestUrl );
+        Log.e(TAG, requestUrl);
 //        第三步创建Request
         Request request = new Request.Builder()
                 .url(requestUrl)
@@ -113,42 +132,76 @@ public class Api {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                callback.onFailure(e);
+                callback.onFailure(call,e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String result = response.body().string();
-                callback.onSuccess(result);
+                callback.onSuccess(call,response,result);
             }
         });
     }
 
-    public void getRequestEm(Context context,TtitCallback callback){
-                    String url = getAppendUrl(requestUrl, mParams);
-                    Log.e("EM loginUrl", url );
+    public void getRequestEm(Context context, TtitCallback callback) {
+        String url = getAppendUrl(requestUrl, mParams);
+        Log.e("EM loginUrl", url);
 
-                    Request request = new Request.Builder()
-                            .addHeader("token", "token")
-                            .url(url)
-                            .get()
-                            .build();
+        Request request = new Request.Builder()
+                .addHeader("token", "token")
+                .url(url)
+                .get()
+                .build();
 
-                    Call call = client.newCall(request);
-                    call.enqueue(new Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            callback.onFailure(e);
-                        }
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(call,e);
+            }
 
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            String result = response.body().string();
+            @Override
+            public void onResponse(Call call, Response resp) throws IOException {
 
-                            callback.onSuccess(result);
-                        }
-                    });
+                String result = resp.body().string();
+
+                callback.onSuccess(call,resp,result);
+            }
+        });
     }
+
+    public void getRequestFm(Context context, TtitCallback callback ) {
+        String url = getAppendUrl(requestUrl, mParams);
+
+        Log.d(TAG, "getRequestFm: "+url);
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response resp) throws IOException {
+                String result = resp.body().string();
+                callback.onSuccess(call,resp,result);
+
+            }
+            @Override
+            public void onFailure(Call call, IOException e){
+                call.cancel();
+                if (call.isCanceled()) {
+
+                    Log.e(TAG, "is cancel");
+                }
+                callback.onFailure(call,e);
+            }
+        });
+
+    }
+
+
+
 
     private String getAppendUrl(String url, Map<String, Object> map) {
         if (map != null && !map.isEmpty()) {

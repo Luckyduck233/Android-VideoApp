@@ -1,7 +1,10 @@
 package com.example.videoapp.api;
 
-public interface TtitCallback {
-    void onSuccess(String result);
+import okhttp3.Call;
+import okhttp3.Response;
 
-    void onFailure(Exception e);
+public interface TtitCallback {
+    void onSuccess(Call call, Response response, String result);
+
+    void onFailure(Call call,Exception e);
 }

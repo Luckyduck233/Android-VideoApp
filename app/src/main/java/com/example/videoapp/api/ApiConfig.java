@@ -30,4 +30,9 @@ public class ApiConfig {
     public static final String EM_TEST = "/test";
 
     public static final String EM_NEWS_LIST = "/getNewsList";
+
+    //    fast mock
+    public static final String FM_BASE_URL = "https://www.fastmock.site/mock/95f4f67a1d4e83457a1256a0e118556d/get_test";
+
+    public static final String FM_TEST_TIMEOUT = "/api/testTimeout";
 }

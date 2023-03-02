@@ -138,16 +138,21 @@
             android:textColor="@color/withoutPassword"
             android:text="免密登录" />
 
-        <Button
-            android:id="@+id/btn_test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test" />
-
-        <Button
-            android:id="@+id/btn_test2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test2" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"
+        android:layout_alignParentBottom="true"
+        />
+
+    <Button
+        android:id="@+id/btn_test2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/btn_test"
+        android:layout_alignParentBottom="true"
+        android:text="test2" />
 </RelativeLayout>

@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Response;
 import xyz.doikki.videocontroller.StandardVideoController;
 import xyz.doikki.videocontroller.component.CompleteView;
 import xyz.doikki.videocontroller.component.ErrorView;
@@ -266,7 +268,7 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
         Api.config(ApiConfig.EM_TEST, params)
                 .getRequestEm(getContext(), new TtitCallback() {
                     @Override
-                    public void onSuccess(String result) {
+                    public void onSuccess(Call call, Response resp, String result) {
                         if (isRefresh) {
                             refreshLayout.finishRefresh(true);
                         } else {
@@ -313,7 +315,7 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
                     }
 
                     @Override
-                    public void onFailure(Exception e) {
+                    public void onFailure(Call call,Exception e) {
                         if (isRefresh) {
                             Toast.makeText(getContext(), "暂时无数据", Toast.LENGTH_SHORT).show();
                         } else {
@@ -343,7 +345,7 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
                         count++;
                         Api.config2(ApiConfig.RANDOM_HEAD, params2).getRequest(getContext(), new TtitCallback() {
                             @Override
-                            public void onSuccess(String result) {
+                            public void onSuccess(Call call, Response resp, String result) {
                                 RandomHeadResoponse resoponse = new Gson().fromJson(result, RandomHeadResoponse.class);
                                 if (resoponse != null && resoponse.getCode().equals("200")) {
                                     imgUrlList.add(resoponse.getImgurl());
@@ -357,7 +359,7 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
                             }
 
                             @Override
-                            public void onFailure(Exception e) {
+                            public void onFailure(Call call,Exception e) {
 
                             }
                         });
@@ -397,7 +399,7 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
         params.put("limit", ApiConfig.PAGE_SIZE);
         Api.config(ApiConfig.VIDEO_LIST, params).getRequest(getContext(), new TtitCallback() {
             @Override
-            public void onSuccess(String result) {
+            public void onSuccess(Call call, Response resp, String result) {
                 Log.d("1204jjh", "setmDatas2");
                 if (isRefresh) {
                     refreshLayout.finishRefresh(true);
@@ -444,7 +446,7 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
             }
 
             @Override
-            public void onFailure(Exception e) {
+            public void onFailure(Call call,Exception e) {
                 if (isRefresh) {
                     refreshLayout.finishRefresh(true);
                 } else {

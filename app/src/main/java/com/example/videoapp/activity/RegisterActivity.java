@@ -16,6 +16,9 @@ import com.example.videoapp.api.TtitCallback;
 
 import java.util.HashMap;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
 
 public class RegisterActivity extends BaseActivity {
     private EditText etAccount, etPwd;
@@ -68,7 +71,7 @@ public class RegisterActivity extends BaseActivity {
         map.put("password", pwd);
         Api.config(ApiConfig.REGISTER, map).postRequest(new TtitCallback() {
             @Override
-            public void onSuccess(String result) {
+            public void onSuccess(Call call, Response resp, String result) {
                 Log.d("onSuccess", result);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -80,7 +83,7 @@ public class RegisterActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Exception e) {
+            public void onFailure(Call call,Exception e) {
 
             }
         });

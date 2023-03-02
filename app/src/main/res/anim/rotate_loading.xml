@@ -9,9 +9,19 @@
 <!--        />-->
 <!--</rotate>-->
 <!--这个100%p的意思是父视图，toYDelta意思是从Y轴出发，值为0则代表着从底部出发，100%p意思就是从父视图的100%处出发-->
-<set xmlns:android="http://schemas.android.com/apk/res/android">
-    <translate
-        android:fromYDelta="0%"
-        android:toYDelta="50%"
-        android:duration="300" />
-</set>
+<!--<set xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--    <translate-->
+<!--        android:fromYDelta="0%"-->
+<!--        android:toYDelta="50%"-->
+<!--        android:duration="300" />-->
+<!--</set>-->
+<rotate xmlns:android="http://schemas.android.com/apk/res/android">
+    <rotate
+        android:fromDegrees="0"
+        android:toDegrees="359"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:duration="1000"
+        android:repeatCount="-1">
+    </rotate>
+</rotate>

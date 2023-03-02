@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:background="@drawable/shape_loading">
-        <ImageView
-            android:id="@+id/iv_rotateCircle"
-            android:layout_width="@dimen/dimen_32dp"
-            android:layout_height="@dimen/dimen_32dp"
-            android:background="@drawable/svg_loading"
-            android:layout_centerInParent="true"
-            />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="@dimen/dimen_30dp"
+    android:background="@drawable/shape_loading">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_rotateCircle"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:text="正在加载"
-            android:textSize="@dimen/dimen_14sp"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_rotateCircle"
+        android:layout_width="@dimen/dimen_32dp"
+        android:layout_height="@dimen/dimen_32dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/svg_loading"
+        />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_rotateCircle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="正在加载"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_14sp" />
+</RelativeLayout>
